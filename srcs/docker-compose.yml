@@ -1,9 +1,20 @@
-version: '3'
-
+version: "3"
 services:
   nginx:
     build:
       context: ./requirements/nginx
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "8080:80"
+    extra_hosts: #doesn't work yet
+      - "mtrautne.42.fr:192.168.122.2"
+    restart: always
+    networks:
+      inception:
+        ipv4_address: 192.168.122.2
+networks:
+  inception:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.122.0/24

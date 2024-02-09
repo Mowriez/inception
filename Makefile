@@ -5,29 +5,38 @@
 #                                                     +:+ +:+         +:+      #
 #    By: mtrautne <mtrautne@student.42wolfsburg.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/02/02 16:20:23 by mtrautne          #+#    #+#              #
-#    Updated: 2024/02/02 22:20:25 by mtrautne         ###   ########.fr        #
+#    Created: 2024/01/31 10:54:48 by mtrautne          #+#    #+#              #
+#    Updated: 2024/01/31 14:45:06 by mtrautne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = inception
+NAME = Inception
 
-SRCS_DIR =	./srcs/
-CONT_DIR =	requirements/
+CONT_DIR =	./srcs/requirements/
 
-CONTAINERS = mariadb nginx wordpress
+CONTAINERS =	nginx wordpress mariadb
 
-DOCKERFILES = $(addsuffix /Dockerfile, $(addprefix $(SRCS_DIR)$(CONT_DIR), $(CONTAINERS)))
+DOCKERFILES =	$(addsuffix /Dockerfile, $(addprefix $(CONT_DIR), $(CONTAINERS)))
 
 all: $(NAME)
 
 $(NAME): $(DOCKERFILES)
-	cd $(SRCS_DIR) && docker-compose up -d
+	cd srcs && docker-compose up -d
+	@echo "make all finished"
 
-up:
-	cd $(SRCS_DIR) && docker-compose up -d
+stop:
+
+	cd srcs && docker-compose stop
 
 down:
-	cd $(SRCS_DIR) && docker-compose down -d
+	cd srcs && docker-compose down
 
-.PHONY: all up down
+clean:
+	@echo "clean not implemented"
+
+fclean: clean
+	@echo "fclean not implemented"
+
+re: fclean all
+
+.PHONY: all clean fclean re
