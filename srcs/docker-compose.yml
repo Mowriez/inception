@@ -5,7 +5,7 @@ services:
       context: ./requirements/nginx
       dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - "8080:80" #port mapping. Access port mapped to container port
     extra_hosts: #doesn't work yet
       - "mtrautne.42.fr:192.168.122.2"
     restart: always
