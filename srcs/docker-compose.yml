@@ -5,8 +5,9 @@ services:
       context: ./requirements/nginx
       dockerfile: Dockerfile
     ports:
-      - "8080:80"
-    extra_hosts: #doesn't work yet
+      - "443:443"
+#doesn't work yet
+    extra_hosts:
       - "mtrautne.42.fr:192.168.122.2"
     restart: always
     networks:
