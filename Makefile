@@ -6,7 +6,7 @@
 #    By: mtrautne <mtrautne@student.42wolfsburg.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/31 10:54:48 by mtrautne          #+#    #+#              #
-#    Updated: 2024/01/31 14:45:06 by mtrautne         ###   ########.fr        #
+#    Updated: 2024/02/10 20:44:32 by mtrautne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ DOCKERFILES =	$(addsuffix /Dockerfile, $(addprefix $(CONT_DIR), $(CONTAINERS)))
 all: $(NAME)
 
 $(NAME): $(DOCKERFILES)
-	cd srcs && docker-compose up -d
+	cd srcs && docker-compose up # -d for putting output in the background
 	@echo "make all finished"
 
 stop:
