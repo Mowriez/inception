@@ -31,11 +31,13 @@ stop:
 down:
 	cd srcs && docker-compose down
 
+#remove all containers
 clean:
-	@echo "clean not implemented"
+	docker rm -vf $$(docker ps -aq)
 
+#remove all containers and images, doesnt work yet
 fclean: clean
-	@echo "fclean not implemented"
+	docker rmi -f $$(docker images -aq)
 
 re: fclean all
 
