@@ -7,12 +7,11 @@ services:
     ports:
       - "443:443"
 #doesn't work yet
-    extra_hosts:
-      - "mtrautne.42.fr:192.168.122.2"
-    restart: always
+    # extra_hosts:
+    #   - "mtrautne.42.fr:127.0.0.1"
+    # restart: always
     networks:
       inception:
-        ipv4_address: 192.168.122.2
 networks:
   inception:
     ipam:
