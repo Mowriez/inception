@@ -1,5 +1,5 @@
 # Use the penultimate version of Debian
-FROM debian:latest
+FROM debian:11
 
 # Update package lists and install Nginx + OpenSSL
 RUN apt-get update && \
@@ -9,8 +9,11 @@ RUN apt-get update && \
 
 EXPOSE 443
 
-# Copy script into container environment
-# COPY ./scripts/setup.sh /
-
 # run script after container is launched
 CMD ["nginx", "-g", "daemon off;"]
+
+#Copy files into container environment
+COPY ./config/nginx.conf /etc/nginx/conf.d
+COPY ./utils/default.css /usr/share/nginx/html
+COPY ./utils/mtrautne.html /usr/share/nginx/html
+

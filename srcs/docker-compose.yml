@@ -1,20 +1,22 @@
-version: "3"
+version: '3'
+
 services:
-  nginx:
+  # nginx:
+  #   container_name: nginx
+  #   build:
+  #     context: ./requirements/nginx
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "443:443"
+  #   restart: always
+  #   networks:
+  #     inception:
+  mariadb:
+    container_name: mariadb
     build:
-      context: ./requirements/nginx
+      context: ./requirements/mariadb
       dockerfile: Dockerfile
-    ports:
-      - "443:443"
-#doesn't work yet
-    # extra_hosts:
-    #   - "mtrautne.42.fr:127.0.0.1"
-    # restart: always
-    networks:
-      inception:
+    restart: always
+
 networks:
   inception:
-    ipam:
-      driver: default
-      config:
-        - subnet: 192.168.122.0/24
