@@ -9,11 +9,10 @@ RUN apt-get update && \
 
 EXPOSE 443
 
-# run script after container is launched
-CMD ["nginx", "-g", "daemon off;"]
-
 #Copy files into container environment
 COPY ./config/nginx.conf /etc/nginx/conf.d
 COPY ./utils/default.css /usr/share/nginx/html
 COPY ./utils/mtrautne.html /usr/share/nginx/html
 
+# run script after container is launched
+CMD ["nginx", "-g", "daemon off;"]
