@@ -47,7 +47,7 @@ clean: down
 fclean: clean
 	@echo "Attempting removal of the following images: srcs-wordpress, srcs-mariadb, srcs-nginx..."
 	@docker rmi -f srcs-wordpress srcs-mariadb srcs-nginx
-	@docker network rm -f inception_network
+	@docker network rm inception_network
 
 # add alias for localhost (or do by hand)
 linux_add_host_alias:
@@ -58,7 +58,5 @@ linux_remove_host_alias:
 	@echo "Removing host alias for mtrautne.42.fr from /etc/hosts..."
 	sudo sed -i '/127.0.0.1 mtrautne.42.fr/d' /etc/hosts
 	@echo "Host alias removed."
-
-re: fclean all
 
 .PHONY: all up status kill down re clean fclean linux_add_host_alias linux_remove_host_alias

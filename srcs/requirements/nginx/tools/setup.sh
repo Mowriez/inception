@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 
 # potentially change ownership (recursively) of # /var/www/mtrautne to www-data (nginx user)
 # chown -R 33:33 /var/www/mtrautne.conf
