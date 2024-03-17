@@ -14,16 +14,16 @@ services:
     networks:
       - inception_network
 
-  wordpress:
-    container_name: wordpress
-    build:
-      context: ./requirements/wordpress
-      dockerfile: Dockerfile
-    env_file:
-      - .env
-    restart: always
-    networks:
-      - inception_network
+  # wordpress:
+  #   container_name: wordpress
+  #   build:
+  #     context: ./requirements/wordpress
+  #     dockerfile: Dockerfile
+  #   env_file:
+  #     - .env
+  #   restart: always
+  #   networks:
+  #     - inception_network
 
   # mariadb:
   #   container_name: mariadb
