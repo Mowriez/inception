@@ -21,4 +21,4 @@ COPY ./tools/entrypoint.sh /usr/bin
 RUN chmod +x /usr/bin/entrypoint.sh
 
 # run script after container is launched
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
