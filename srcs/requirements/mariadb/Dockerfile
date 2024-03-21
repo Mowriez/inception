@@ -1,6 +1,12 @@
 FROM debian:11
 
-RUN apt-get update && apt-get install -y mariadb-server && \
-    rm -rf /var/lib/apt/lists/* && apt-get clean
+RUN apt-get update && apt-get upgrade -y && apt-get install -y vim
+RUN apt-get install -y mariadb-server
 
-# CMD ["tail", "-f", "/dev/null"]
+COPY ./tools/entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
+
+EXPOSE 3306
+
+ENTRYPOINT ["/entrypoint.sh"]

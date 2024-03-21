@@ -1,7 +1,4 @@
-!/bin/bash
-
-# potentially change ownership (recursively) of # /var/www/mtrautne to www-data (nginx user)
-# chown -R 33:33 /var/www/mtrautne.conf
+#!/bin/bash
 
 # create ssl key and certificate
 openssl req \
@@ -9,7 +6,7 @@ openssl req \
        -x509 -days 365 -out $SSL_CERT \
        -subj "/C=DE/ST=Lower Saxony/L=Wolfsburg/O=mtrautne/CN=mtrautne.42.fr"
 
-# nginx doens't understand env variables in the conf file
+# nginx doens't understand env variables in the conf file so we need to replace them
 envsubst < /usr/share/nginx/mtrautne.conf > /etc/nginx/sites-available/default
 
 # start nginx
