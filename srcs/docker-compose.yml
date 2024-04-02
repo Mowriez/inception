@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 services:
   # nginx:
@@ -16,52 +16,54 @@ services:
   #     - inception
   #   restart: always
 
-  wordpress:
-    container_name: wordpress
-    build:
-      context: ./requirements/wordpress
-      dockerfile: Dockerfile
-    env_file:
-      - .env
-    environment:
-      - WORDPRESS_DB_HOST=db:3306
-      - WORDPRESS_DB_USER=as
-      - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
-      - WORDPRESS_DB_NAME=wordpress
-    volumes:
-      - wordpress:/var/www/html
-    networks:
-      - inception
-    restart: always
-
-  # mariadb:
-  #   container_name: mariadb
+  # wordpress:
+  #   container_name: wordpress
   #   build:
-  #     context: ./requirements/mariadb
+  #     context: ./requirements/wordpress
   #     dockerfile: Dockerfile
   #   env_file:
   #     - .env
-  #   restart: always
+  #   environment:
+  #     - WORDPRESS_DB_HOST=db:3306
+  #     - WORDPRESS_DB_USER=as
+  #     - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
+  #     - WORDPRESS_DB_NAME=wordpress
+  #   volumes:
+  #     - wordpress:/var/www/html
   #   networks:
   #     - inception
+  #   restart: always
 
-volumes:
-  wordpress:
-    name: wordpress
-    driver: local
-    driver_opts:
-      type: none
-      device: ./data/wordpress/
-      o: bind
+  mariadb:
+    container_name: mariadb
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    restart: always
+    ports:
+      - "3306:3306"
+    # networks:
+    #   - inception
 
-  # mariadb_volume:
-  #     driver: local
-  #     driver_opts:
-  #       type: none
-  #       device: /var/inception/db
-  #       o: bind
+# volumes:
+#   wordpress:
+#     name: wordpress
+#     driver: local
+#     driver_opts:
+#       type: none
+#       device: ./data/wordpress/
+#       o: bind
 
-networks:
- inception:
-    driver: bridge
-    name: inception
+#   mariadb_volume:
+#       driver: local
+#       driver_opts:
+#         type: none
+#         device: /var/inception/db
+#         o: bind
+
+# networks:
+#  inception:
+#     driver: bridge
+#     name: inception
