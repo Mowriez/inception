@@ -11,12 +11,18 @@ until mysqladmin ping >/dev/null 2>&1; do
   sleep 1
 done
 
-# Secure the MariaDB installation
+DB_ADMIN=$(grep DB_ADMIN /run/secrets/credentials_file | cut -d '=' -f2)
+DB_ADMIN_PASSWORD=$(grep DB_ROOT_PASSWORD /run/secrets/db_root_password_file | cut -d '=' -f2)
+DB_USER=$(grep DB_USER /run/secrets/credentials_file | cut -d '=' -f2)
+DB_USER_PASSWORD=$(grep DB_PASSWORD /run/secrets/db_password_file | cut -d '=' -f2)
+DB_NAME=$(grep DB_NAME /run/secrets/credentials_file | cut -d '=' -f2)
+
+# Secure the MariaDB installation prod style
 mysql_secure_installation << EOF
 Y
 Y
-password
-password
+$DB_ADMIN_PASSWORD
+$DB_ADMIN_PASSWORD
 Y
 Y
 Y
@@ -24,26 +30,17 @@ Y
 EOF
 
 # Create a database and user for WordPress
-mysql -u"test" -p"password" << EOF
-	CREATE DATABASE IF NOT EXISTS wordpress ;
-	CREATE USER IF NOT EXISTS 'user'@'%' IDENTIFIED BY 'user' ;
-	GRANT ALL PRIVILEGES ON wordpress.* TO 'user'@'%' WITH GRANT OPTION;
+mysql -u"root" -p"$DB_ADMIN_PASSWORD" << EOF
+	CREATE DATABASE IF NOT EXISTS $DB_NAME ;
+    CREATE USER IF NOT EXISTS '$DB_ADMIN'@'localhost' IDENTIFIED BY '$DB_ADMIN_PASSWORD' ;
+    GRANT ALL PRIVILEGES ON *.* TO '$DB_ADMIN'@'localhost' WITH GRANT OPTION ;
+    FLUSH PRIVILEGES;
+	CREATE USER IF NOT EXISTS '$DB_USER'@'%' IDENTIFIED BY '$DB_USER_PASSWORD' ;
+	GRANT ALL PRIVILEGES ON wordpress.* TO '$DB_USER'@'%' WITH GRANT OPTION ;
 	FLUSH PRIVILEGES;
 EOF
 
-# Create admin user 
-# -e flag tells mysql command to execute the following string 
-# as SQL command. Without it, it's interpreted as a database name
-# mysql -e "CREATE USER 'admin'@'%' IDENTIFIED BY 'password';"
-# mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' WITH GRANT OPTION;"
-
-# # Create normal user
-# mysql -e "CREATE DATABASE IF NOT EXISTS wordpress;"
-# mysql -e "CREATE USER 'wordpress'@'%' IDENTIFIED BY 'password';"
-# mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress'@'%';"
-
-# Shutdown the MariaDB server
 mysqladmin shutdown
 
-# Start the MariaDB server again without backgrounding - PID 1
+# Restart the server again without backgrounding -> PID 1
 exec mysqld
