@@ -24,7 +24,7 @@ Y
 EOF
 
 # Create a database and user for WordPress
-mysql -u"admin" -p"password" << EOF
+mysql -u"test" -p"password" << EOF
 	CREATE DATABASE IF NOT EXISTS wordpress ;
 	CREATE USER IF NOT EXISTS 'user'@'%' IDENTIFIED BY 'user' ;
 	GRANT ALL PRIVILEGES ON wordpress.* TO 'user'@'%' WITH GRANT OPTION;

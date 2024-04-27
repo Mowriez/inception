@@ -57,7 +57,7 @@ volumes:
 #     driver_opts:
 #       type: none
   #todo: change path to the correct path
-#       device: ./home/mtrautne/data/wordpress
+#       device: /home/mtrautne/data/wordpress
 #       o: bind
 
   mariadb_vol:
@@ -66,7 +66,7 @@ volumes:
     driver_opts:
       type: none
       #todo: change path to the correct path
-      device: /Users/mtrautne/Documents/inception/home/mtrautne/data/mariadb
+      device: /home/mtrautne/data/mariadb
       o: bind
 
 networks:
