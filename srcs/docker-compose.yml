@@ -22,8 +22,8 @@ services:
   #   env_file:
   #     - .env
   #   environment:
-  #     - WORDPRESS_DB_HOST=db:3306
-  #     - WORDPRESS_DB_USER=as
+  #     - WORDPRESS_DB_HOST=mariadb:3306
+  #     - WORDPRESS_DB_USER=wordpress
   #     - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
   #     - WORDPRESS_DB_NAME=wordpress
   #   volumes:
@@ -37,8 +37,11 @@ services:
     build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
-    env_file:
-      - .env
+    secrets:
+      - db_root_password
+      - db_password
+      - credentials
+
     volumes:
       - mariadb_vol:/var/lib/mysql
     ports:
@@ -53,7 +56,8 @@ volumes:
 #     driver: local
 #     driver_opts:
 #       type: none
-#       device: ./data/wordpress
+  #todo: change path to the correct path
+#       device: ./home/mtrautne/data/wordpress
 #       o: bind
 
   mariadb_vol:
@@ -61,10 +65,19 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ./data/mariadb
+      #todo: change path to the correct path
+      device: /Users/mtrautne/Documents/inception/home/mtrautne/data/mariadb
       o: bind
 
 networks:
  inception:
     driver: bridge
     name: inception
+
+secrets:
+  db_root_password:
+    file: ./secrets/db_root_password.txt
+  mysql_password:
+    file: ./secrets/db_password.txt
+  credentials:
+    file: ./secrets/credentials.txt

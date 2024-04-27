@@ -47,6 +47,9 @@ clean: down
 fclean: clean
 	@echo "Attempting removal of the following images: srcs-wordpress, srcs-mariadb, srcs-nginx..."
 	@docker rmi -f srcs-wordpress srcs-mariadb srcs-nginx
+	@echo "Attempting removal of the following volumes: wordpress_vol, mariadb_vol..."
+	@docker volume rm mariadb_vol wordpress_vol
+	@echo "Attempting removal of the following networks: inception_network..."
 	@docker network rm inception_network
 
 # add alias for localhost (or do by hand)
