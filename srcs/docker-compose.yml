@@ -53,7 +53,7 @@ volumes:
 #     driver: local
 #     driver_opts:
 #       type: none
-#       device: /home/mtrautne/projects/data/mariadb
+#       device: ./data/wordpress
 #       o: bind
 
   mariadb_vol:
@@ -61,7 +61,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/mtrautne/projects/data/mariadb
+      device: ./data/mariadb
       o: bind
 
 networks:
