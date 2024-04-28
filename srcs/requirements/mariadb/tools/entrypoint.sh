@@ -12,9 +12,9 @@ until mysqladmin ping >/dev/null 2>&1; do
 done
 
 DB_ADMIN=$(grep DB_ADMIN /run/secrets/credentials_file | cut -d '=' -f2)
-DB_ADMIN_PASSWORD=$(grep DB_ROOT_PASSWORD /run/secrets/db_root_password_file | cut -d '=' -f2)
+DB_ADMIN_PASSWORD=$(cat /run/secrets/db_root_password_file)
 DB_USER=$(grep DB_USER /run/secrets/credentials_file | cut -d '=' -f2)
-DB_USER_PASSWORD=$(grep DB_PASSWORD /run/secrets/db_password_file | cut -d '=' -f2)
+DB_USER_PASSWORD=$(cat /run/secrets/db_password_file)
 DB_NAME=$(grep DB_NAME /run/secrets/credentials_file | cut -d '=' -f2)
 
 # Secure the MariaDB installation prod style
