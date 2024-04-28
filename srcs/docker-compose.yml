@@ -14,31 +14,34 @@ services:
   #     - inception
   #   restart: always
 
-  wordpress:
-    container_name: wordpress
-    depends_on:
-      - mariadb
-    build:
-      context: ./requirements/wordpress
-      dockerfile: Dockerfile
-    environment:
-      - WORDPRESS_DB_HOST=$WP_DB_HOST
-      - WORDPRESS_DB_NAME=$WP_DB_NAME
-    volumes:
-      - wordpress:/var/www/html
-    networks:
-      - inception
-    env_file:
-      - .env
-    secrets:
-      - db_password_file
-    restart: always
+  # wordpress:
+  #   container_name: wordpress
+  #   depends_on:
+  #     - mariadb
+  #   build:
+  #     context: ./requirements/wordpress
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - WORDPRESS_DB_HOST=$WP_DB_HOST
+  #     - WORDPRESS_DB_NAME=$WP_DB_NAME
+  #   volumes:
+  #     - wordpress:/var/www/html
+  #   networks:
+  #     - inception
+  #   env_file:
+  #     - .env
+  #   secrets:
+  #     - db_password_file
+  #   restart: always
 
   mariadb:
     container_name: mariadb
     build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
+    environment:
+      - MYSQL_PASSWORD=/run/secrets/db_password_file
+      - MYSQL_ROOT_PASSWORD=/run/secrets/db_root_password_file
     secrets:
       - db_root_password_file
       - db_password_file
