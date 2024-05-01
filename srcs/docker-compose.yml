@@ -14,38 +14,35 @@ services:
   #     - inception
   #   restart: always
 
-  # wordpress:
-  #   container_name: wordpress
-  #   depends_on:
-  #     - mariadb
-  #   build:
-  #     context: ./requirements/wordpress
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     - WORDPRESS_DB_HOST=$WP_DB_HOST
-  #     - WORDPRESS_DB_NAME=$WP_DB_NAME
-  #   volumes:
-  #     - wordpress:/var/www/html
-  #   networks:
-  #     - inception
-  #   env_file:
-  #     - .env
-  #   secrets:
-  #     - db_password_file
-  #   restart: always
+  wordpress:
+    container_name: wordpress
+    depends_on:
+      - mariadb
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
+    environment:
+      - WORDPRESS_DB_HOST=$WP_DB_HOST
+      - WORDPRESS_DB_NAME=$WP_DB_NAME
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inception
+    env_file:
+      - .env
+    secrets:
+      - db_password_file
+    restart: always
 
   mariadb:
     container_name: mariadb
     build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
-    environment:
-      - MYSQL_PASSWORD=/run/secrets/db_password_file
-      - MYSQL_ROOT_PASSWORD=/run/secrets/db_root_password_file
     secrets:
-      - db_root_password_file
-      - db_password_file
-      - credentials_file
+      - db_root_password
+      - db_password
+      - credentials
     volumes:
       - mariadb_vol:/var/lib/mysql
     networks:
@@ -66,7 +63,6 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      #todo: change path to the correct path
       device: /home/mtrautne/data/mariadb
       o: bind
 
@@ -76,9 +72,9 @@ networks:
     name: inception
 
 secrets:
-  db_root_password_file:
+  db_root_password:
     file: ./secrets/db_root_password.txt
-  db_password_file:
+  db_password:
     file: ./secrets/db_password.txt
-  credentials_file:
+  credentials:
     file: ./secrets/credentials.txt

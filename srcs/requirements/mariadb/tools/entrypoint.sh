@@ -11,14 +11,18 @@ until mysqladmin ping >/dev/null 2>&1; do
   sleep 1
 done
 
-DB_ADMIN=$(grep DB_ADMIN /run/secrets/credentials_file | cut -d '=' -f2)
-DB_ADMIN_PASSWORD=$(cat /run/secrets/db_root_password_file)
-DB_USER=$(grep DB_USER /run/secrets/credentials_file | cut -d '=' -f2)
-DB_USER_PASSWORD=$(cat /run/secrets/db_password_file)
-DB_NAME=$(grep DB_NAME /run/secrets/credentials_file | cut -d '=' -f2)
+DB_NAME=$(grep DB_NAME /run/secrets/credentials | cut -d '=' -f2)
+DB_ADMIN=$(grep DB_ADMIN /run/secrets/credentials | cut -d '=' -f2)
+DB_USER=$(grep DB_USER /run/secrets/credentials | cut -d '=' -f2)
+DB_ADMIN_PASSWORD=$(cat /run/secrets/db_root_password)
+DB_USER_PASSWORD=$(cat /run/secrets/db_password)
 
-# Secure the MariaDB installation prod style
+# echo -e "\e[1;32mName: $DB_NAME | ADMIN: $DB_ADMIN | USER: $DB_USER\n\e[0m"
+# echo -e "\e[1;32mAdmin Password: $DB_ADMIN_PASSWORD | User Password: $DB_USER_PASSWORD\n\e[0m"
+
+# Secure MariaDB installation prod style
 mysql_secure_installation << EOF
+
 Y
 Y
 $DB_ADMIN_PASSWORD
@@ -30,6 +34,7 @@ Y
 EOF
 
 # Create a database and user for WordPress
+echo -e "\e[1;32mSetting up the database and user for WordPress...\e[0m"
 mysql -u"root" -p"$DB_ADMIN_PASSWORD" << EOF
 	CREATE DATABASE IF NOT EXISTS $DB_NAME ;
     CREATE USER IF NOT EXISTS '$DB_ADMIN'@'localhost' IDENTIFIED BY '$DB_ADMIN_PASSWORD' ;
@@ -42,5 +47,6 @@ EOF
 
 mysqladmin shutdown
 
+echo -e "\e[1;32mDone with mariadb setup!\e[0m"
 # Restart the server again without backgrounding -> PID 1
 exec mysqld

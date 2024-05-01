@@ -52,7 +52,11 @@ fclean: clean
 	@echo "Attempting removal of the following networks: inception_network..."
 	@docker network rm inception_network
 
-# add alias for localhost (or do by hand)
+hostclean:
+	@echo "Attempting removal of the remaining hostfiles for volumes..."
+	@sudo rm -rf /home/mtrautne/data
+
+# add alias for localhost (or do it by hand)
 linux_add_host_alias:
 	@echo "Adding host alias for mtrautne.42.fr to /etc/hosts..."
 	sudo -- sh -c "echo '127.0.0.1 mtrautne.42.fr' >> /etc/hosts"
