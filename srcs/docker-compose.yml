@@ -1,18 +1,22 @@
 services:
-  # nginx:
-  #   container_name: nginx
-  #   build:
-  #     context: ./requirements/nginx
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "443:443"
-  #   env_file:
-  #   - .env
-  #   volumes:
-  #     - wordpress:/var/www/html
-  #   networks:
-  #     - inception
-  #   restart: always
+  nginx:
+    container_name: nginx
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
+    secrets:
+      - credentials
+    ports:
+      - "443:443"
+    env_file:
+    - .env
+    volumes:
+      - wordpress_vol:/var/www/html
+    networks:
+      inception:
+        aliases:
+          - nginx
+    restart: always
 
   wordpress:
     container_name: wordpress
@@ -21,17 +25,15 @@ services:
     build:
       context: ./requirements/wordpress
       dockerfile: Dockerfile
-    environment:
-      - WORDPRESS_DB_HOST=$WP_DB_HOST
-      - WORDPRESS_DB_NAME=$WP_DB_NAME
     volumes:
-      - wordpress:/var/www/html
+      - wordpress_vol:/var/www/html
     networks:
-      - inception
-    env_file:
-      - .env
+      inception:
+        aliases:
+          - wordpress
     secrets:
-      - db_password_file
+      - credentials
+      - db_password
     restart: always
 
   mariadb:
@@ -46,12 +48,14 @@ services:
     volumes:
       - mariadb_vol:/var/lib/mysql
     networks:
-      - inception
+      inception:
+        aliases:
+          - mariadb
     restart: always
 
 volumes:
   wordpress_vol:
-    name: wordpress
+    name: wordpress_vol
     driver: local
     driver_opts:
       type: none
@@ -69,7 +73,7 @@ volumes:
 networks:
  inception:
     driver: bridge
-    name: inception
+    name: inception_network
 
 secrets:
   db_root_password:

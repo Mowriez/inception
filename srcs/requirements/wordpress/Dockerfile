@@ -1,7 +1,6 @@
 FROM debian:11
 
 RUN apt-get update && apt-get install -y \
-RUN apt-get install -y \
     php-fpm \
     php-curl \
     php-bcmath \
@@ -22,4 +21,12 @@ RUN apt-get install -y \
 
 EXPOSE 9000
 
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+RUN rm /etc/php/7.4/fpm/pool.d/www.conf
+
+COPY ./tools/www.conf /etc/php/7.4/fpm/pool.d/
+COPY ./tools/entrypoint.sh /usr/bin
+
+RUN chmod +x /usr/bin/entrypoint.sh
+
+
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]

@@ -40,20 +40,24 @@ re: $(DOCKERFILES) kill down
 
 # remove all containers of this project and their volumes
 clean: down
-	@echo "Attempting removal of the following containers: nginx, wordpress, mariadb..."
+	@echo "Removing containers"
 	@docker rm -vf nginx wordpress mariadb
 
-# remove all containers, networks and images Todo: remove volumes
+# remove all containers, networks, images and volumes
 fclean: clean
-	@echo "Attempting removal of the following images: srcs-wordpress, srcs-mariadb, srcs-nginx..."
+	@echo "Removing images"
 	@docker rmi -f srcs-wordpress srcs-mariadb srcs-nginx
-	@echo "Attempting removal of the following volumes: wordpress_vol, mariadb_vol..."
+	@echo "Removing volumes"
 	@docker volume rm mariadb_vol wordpress_vol
-	@echo "Attempting removal of the following networks: inception_network..."
+	@echo "Removing networks"
 	@docker network rm inception_network
 
+# removes also build cache (old versions of apps...not advisable if Wifi is bad)
+ffclean:
+	@docker system prune --all --force --volumes
+
 hostclean:
-	@echo "Attempting removal of the remaining hostfiles for volumes..."
+	@echo "Removing remaining mounted data"
 	@sudo rm -rf /home/mtrautne/data
 
 # add alias for localhost (or do it by hand)
@@ -66,4 +70,4 @@ linux_remove_host_alias:
 	sudo sed -i '/127.0.0.1 mtrautne.42.fr/d' /etc/hosts
 	@echo "Host alias removed."
 
-.PHONY: all up status kill down re clean fclean linux_add_host_alias linux_remove_host_alias
+.PHONY: all up status kill down re clean fclean ffclean linux_add_host_alias linux_remove_host_alias
