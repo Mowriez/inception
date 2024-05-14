@@ -21,7 +21,7 @@ all: up
 up: $(DOCKERFILES)
 	@mkdir -p /home/mtrautne/data/mariadb
 	@mkdir -p /home/mtrautne/data/wordpress
-	@cd srcs && docker-compose up -d
+	@cd srcs && docker-compose up
 
 # ps = process status
 status:
