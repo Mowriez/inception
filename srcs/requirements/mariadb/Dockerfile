@@ -1,14 +1,11 @@
 FROM debian:11
 
-RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y vim mariadb-server && \
+RUN apt-get update && \
+    apt-get install -y mariadb-server && \
     rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
-
 COPY ./tools/entrypoint.sh /usr/local/bin
-
-WORKDIR /usr/local/bin
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 3306
 

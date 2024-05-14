@@ -1,1 +1,4 @@
-.env
+# Secrets
+credentials.txt
+db_password.txt
+db_root_password.txt

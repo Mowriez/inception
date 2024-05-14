@@ -52,13 +52,9 @@ fclean: clean
 	@echo "Removing networks"
 	@docker network rm inception_network
 
-# removes also build cache (old versions of apps...not advisable if Wifi is bad)
-ffclean:
+# removes build cache (not advisable if Wifi is bad and you want to rebuild after)
+nuke:
 	@docker system prune --all --force --volumes
-
-hostclean:
-	@echo "Removing remaining mounted data"
-	@sudo rm -rf /home/mtrautne/data
 
 # add alias for localhost (or do it by hand)
 linux_add_host_alias:
