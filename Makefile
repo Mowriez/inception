@@ -19,7 +19,9 @@ all: up
 
 # add -d for detached mode
 up: $(DOCKERFILES)
-	@cd srcs && docker-compose up
+	@mkdir -p /home/mtrautne/data/mariadb
+	@mkdir -p /home/mtrautne/data/wordpress
+	@cd srcs && docker-compose up -d
 
 # ps = process status
 status:
